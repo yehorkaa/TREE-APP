@@ -1,3 +1,5 @@
+import type { HTMLAttributes, ReactNode } from "react";
+
 export interface TreeDataItem {
     id: string;
     name: string;
@@ -32,3 +34,38 @@ export type TreeItemProps = TreeProps & {
     handleDrop?: (item: TreeDataItem) => void;
     draggedItem: TreeDataItem | null;
 }; 
+
+export type TreeNodeProps = {
+    item: TreeDataItem;
+    handleSelectChange: (item: TreeDataItem | undefined) => void;
+    expandedItemIds: string[];
+    setExpandedItemIds: React.Dispatch<React.SetStateAction<string[]>>;
+    selectedItemId?: string;
+    defaultNodeIcon?: any;
+    defaultLeafIcon?: any;
+    handleDragStart?: (item: TreeDataItem) => void;
+    handleDrop?: (item: TreeDataItem) => void;
+    draggedItem: TreeDataItem | null;
+}
+
+export type TreeLeafProps = HTMLAttributes<HTMLDivElement> & {
+    item: TreeDataItem
+    selectedItemId?: string
+    handleSelectChange: (item: TreeDataItem | undefined) => void
+    defaultLeafIcon?: any
+    handleDragStart?: (item: TreeDataItem) => void
+    handleDrop?: (item: TreeDataItem) => void
+    draggedItem: TreeDataItem | null
+}
+
+export interface TreeIconProps {
+    item: TreeDataItem
+    isOpen?: boolean
+    isSelected?: boolean
+    default?: any
+}
+
+export interface TreeActionsProps {
+    children?: ReactNode
+    isSelected: boolean
+}
