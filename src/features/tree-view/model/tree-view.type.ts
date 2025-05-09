@@ -38,7 +38,7 @@ export type TreeItemProps = TreeProps & {
     handleDragStart?: (item: TreeDataItem) => void;
     handleDrop?: (item: TreeDataItem) => void;
     draggedItem: TreeDataItem | null;
-}; 
+};
 
 export type TreeNodeProps = {
     item: TreeDataItem;
@@ -46,28 +46,28 @@ export type TreeNodeProps = {
     expandedItemIds: string[];
     setExpandedItemIds: React.Dispatch<React.SetStateAction<string[]>>;
     selectedItemId?: string;
-    defaultNodeIcon?: ElementType;
-    defaultLeafIcon?: ElementType;
+    defaultNodeIcon?: ReactNode;
+    defaultLeafIcon?: ReactNode;
     handleDragStart?: (item: TreeDataItem) => void;
     handleDrop?: (item: TreeDataItem) => void;
     draggedItem: TreeDataItem | null;
 }
 
 export type TreeLeafProps = HTMLAttributes<HTMLDivElement> & {
-    item: TreeDataItem
-    selectedItemId?: string
-    handleSelectChange: (item: TreeDataItem | undefined) => void
-    defaultLeafIcon?: ElementType
-    handleDragStart?: (item: TreeDataItem) => void
-    handleDrop?: (item: TreeDataItem) => void
-    draggedItem: TreeDataItem | null
+    item: TreeDataItem;
+    selectedItemId?: string;
+    handleSelectChange: (item: TreeDataItem | undefined) => void;
+    defaultLeafIcon?: ElementType;
+    handleDragStart?: (item: TreeDataItem) => void;
+    handleDrop?: (item: TreeDataItem) => void;
+    draggedItem: TreeDataItem | null;
 }
 
 export interface TreeIconProps {
-    item: TreeDataItem
-    isOpen?: boolean
-    isSelected?: boolean
-    default?: ElementType
+    item: TreeDataItem;
+    isOpen?: boolean;
+    isSelected?: boolean;
+    default?: ElementType;
 }
 
 export interface TreeActionsProps {

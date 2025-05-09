@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type ElementType } from 'react'
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { cn } from '@/lib/utils'
 import type { TreeNodeProps } from '../model/tree-view.type'
@@ -83,7 +83,7 @@ const TreeNode = ({
                         item={item}
                         isSelected={selectedItemId === item.id}
                         isOpen={isOpen}
-                        default={defaultNodeIcon}
+                        default={defaultNodeIcon as ElementType}
                     />
                     <span className="text-sm truncate">{item.name}</span>
                     <TreeActions isSelected={selectedItemId === item.id}>

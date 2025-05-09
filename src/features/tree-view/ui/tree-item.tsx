@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { type ElementType } from 'react'
 import type { TreeItemProps } from '../model/tree-view.type'
 import { TreeNode } from './tree-node'
 import { TreeLeaf } from './tree-leaf'
@@ -47,7 +47,7 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                                     item={item}
                                     selectedItemId={selectedItemId}
                                     handleSelectChange={handleSelectChange}
-                                    defaultLeafIcon={defaultLeafIcon}
+                                    defaultLeafIcon={defaultLeafIcon as ElementType}
                                     handleDragStart={handleDragStart}
                                     handleDrop={handleDrop}
                                     draggedItem={draggedItem}
