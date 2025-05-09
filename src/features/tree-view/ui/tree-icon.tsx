@@ -1,24 +1,22 @@
 import { Folder, File } from 'lucide-react'
-import type { TreeIconProps } from '../model/tree-view.type';
+import type { TreeIconProps, IconOption } from '../model/tree-view.type';
 
 const TreeIcon = ({
     item,
     isOpen,
     isSelected,
-    default: defaultIcon
+    default: defaultIcon = File
 }: TreeIconProps) => {
-    let Icon = defaultIcon;
-    if (isSelected && item.selectedIcon) {
-        Icon = item.selectedIcon;
-    } else if (isOpen && item.openIcon) {
-        Icon = item.openIcon;
-    } else if (item.icon) {
-        Icon = item.icon;
-    } else if (item.children) {
-        Icon = Folder;
-    } else {
-        Icon = File;
-    }
+    const options: IconOption[] = [
+        { condition: Boolean(isSelected && item.selectedIcon), icon: item.selectedIcon },
+        { condition: Boolean(isOpen && item.openIcon), icon: item.openIcon },
+        { condition: Boolean(item.icon), icon: item.icon },
+        { condition: Boolean(item.children), icon: Folder },
+        { condition: true, icon: File }
+    ];
+
+    const Icon = options.find(opt => opt.condition)?.icon || defaultIcon;
+
     return <Icon className="h-4 w-4 shrink-0 mr-2" />;
 };
 

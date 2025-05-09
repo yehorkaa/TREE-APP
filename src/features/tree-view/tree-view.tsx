@@ -10,7 +10,6 @@ const TreeView = React.forwardRef<HTMLDivElement, TreeProps>(
             data,
             initialSelectedItemId,
             onSelectChange,
-            expandAll,
             defaultLeafIcon,
             defaultNodeIcon,
             className,
@@ -67,7 +66,7 @@ const TreeView = React.forwardRef<HTMLDivElement, TreeProps>(
             return ids;
         });
 
-        const flattenVisibleItems = React.useCallback((items: TreeDataItem[] | TreeDataItem): TreeDataItem[] => {
+        const flattenVisibleItems = (items: TreeDataItem[] | TreeDataItem): TreeDataItem[] => {
             const result: TreeDataItem[] = [];
             const traverse = (node: TreeDataItem) => {
                 result.push(node);
@@ -81,52 +80,55 @@ const TreeView = React.forwardRef<HTMLDivElement, TreeProps>(
                 traverse(items);
             }
             return result;
-        }, [expandedItemIds]);
+        };
 
         const visibleItems = React.useMemo(() => flattenVisibleItems(data), [data, expandedItemIds]);
 
-        const handleKeyDown = React.useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+        const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
             e.preventDefault();
             const eventKey = e.key;
             if (visibleItems.length === 0 || !(eventKey in KEY)) return;
             const currentIndex = visibleItems.findIndex(item => item.id === selectedItemId);
             let newIndex = currentIndex;
-
+            const currentItem = visibleItems[currentIndex];
             switch (eventKey) {
-                case KEY.ArrowDown:
+                case KEY.ArrowDown: {
                     newIndex = currentIndex < visibleItems.length - 1 ? currentIndex + 1 : 0;
                     break;
-                case KEY.ArrowUp:
+                }
+                case KEY.ArrowUp: {
                     newIndex = currentIndex > 0 ? currentIndex - 1 : visibleItems.length - 1;
                     break;
-                case KEY.ArrowRight:
-                    const currentItem = visibleItems[currentIndex];
+                }
+                case KEY.ArrowRight: {
                     if (currentItem?.children && !expandedItemIds.includes(currentItem.id)) {
                         setExpandedItemIds(prev => [...prev, currentItem.id]);
                     }
                     break;
-                case KEY.ArrowLeft:
-                    const selectedItem = visibleItems[currentIndex];
-                    if (selectedItem?.children && expandedItemIds.includes(selectedItem.id)) {
-                        setExpandedItemIds(prev => prev.filter(id => id !== selectedItem.id));
+                }
+                case KEY.ArrowLeft: {
+                    if (currentItem?.children && expandedItemIds.includes(currentItem.id)) {
+                        setExpandedItemIds(prev => prev.filter(id => id !== currentItem.id));
                     }
                     break;
-                case KEY.Enter:
-                    const focusedItem = visibleItems[currentIndex];
-                    if (focusedItem?.children) {
-                        if (expandedItemIds.includes(focusedItem.id)) {
-                            setExpandedItemIds(prev => prev.filter(id => id !== focusedItem.id));
+                }
+                case KEY.Enter: {
+                    if (currentItem?.children) {
+                        if (expandedItemIds.includes(currentItem.id)) {
+                            setExpandedItemIds(prev => prev.filter(id => id !== currentItem.id));
                         } else {
-                            setExpandedItemIds(prev => [...prev, focusedItem.id]);
+                            setExpandedItemIds(prev => [...prev, currentItem.id]);
                         }
                     }
                     break;
+                }
             }
             
             if (newIndex !== currentIndex) {
-                handleSelectChange(visibleItems[newIndex]);
+                const newItem = visibleItems[newIndex];
+                handleSelectChange(newItem);
             }
-        }, [data, selectedItemId, expandedItemIds, flattenVisibleItems, visibleItems, handleSelectChange, setExpandedItemIds]);
+        }
 
         return (
             <div
